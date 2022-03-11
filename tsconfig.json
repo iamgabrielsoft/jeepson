@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+      "outDir": "./lib/",
+      "sourceMap": true,
+      "declaration": true,
+      "strictNullChecks": true,
+      "module": "commonjs",
+      "moduleResolution": "node",
+      "target": "es5",
+      "lib": ["es6", "dom"]
+    },
+    "include": [
+      "./src"
+    ]
