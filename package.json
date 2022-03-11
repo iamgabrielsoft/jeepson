@@ -1,0 +1,9 @@
+{
+  "name": "jeepson",
+  "version": "0.0.1",
+  "description": "json parser",
+  "main": "index.ts",
+  "repository": "'",
+  "author": "iamgabrielsoft",
+  "license": "MIT"
+}
