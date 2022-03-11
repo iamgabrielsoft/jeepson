@@ -10,3 +10,7 @@ Jeepson is a drop-in alternative to JSON.parse/stringify with added compression 
 
 
 #### Mode of Conduct 
+
+
+### Author 
+ - https://twitter.com/iamgabrielsoft
