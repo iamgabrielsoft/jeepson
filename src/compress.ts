@@ -1,14 +1,32 @@
 
+import { compressAny } from "./compressor/any";
+import { compressArray } from "./compressor/array";
+import { compressDate } from "./compressor/date";
+import { compressNumber } from "./compressor/number";
+import { compresObject } from "./compressor/object";
+import { compressString } from "./compressor/string";
+import { TemplateObject } from "./compressor/template/object";
 import { ZipsonWriter } from "./compressor/writer";
 import { CompressOptions, Compressors, Context, InvertedIndex } from "./interface"
+
+
+/** create a new compression context */
+export const makeCompressContext = ():Context => {
+    return {
+        arrayItemWriter: [], 
+        arrayLevel: 0
+    }
+}
+
 
 
 export const compressors: Compressors = {
     any: compressAny, 
     array: compressArray, 
-    object: compressObject, 
+    object: compresObject, 
     date: compressDate, 
     number: compressNumber, 
+    string: compressString,
     template: {
         Object: TemplateObject
     }
