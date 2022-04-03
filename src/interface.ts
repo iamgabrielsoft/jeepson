@@ -48,6 +48,10 @@ export type Compressor<T> = (
 
 
 
+ 
+/**
+ * All available compressors for specific types
+ */
  export interface Compressors {
      any: Compressor<any>; 
      array: Compressor<any[]>; 
