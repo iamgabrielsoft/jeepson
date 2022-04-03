@@ -1,6 +1,7 @@
 
-import { TEMPLATE_OBJECT_END, TEMPLATE_OBJECT_START } from "../../constant";
+import { TEMPLATE_OBJECT_END, TEMPLATE_OBJECT_FINAL, TEMPLATE_OBJECT_START } from "../../constant";
 import { CompressOptions, Compressors, Context, InvertedIndex, TemplateCompressor } from "../../interface";
+import { isObject } from "../utils";
 import { ZipsonWriter } from "../writer";
 
 
@@ -10,6 +11,29 @@ type TemplateStructNestedField = [string, TemplateStruct];
 interface TemplateStruct extends Array<TemplateStructField | TemplateStructNestedField> {
   [index: number]: TemplateStructField | TemplateStructNestedField;
 }
+
+
+
+const compresObjectTemplate = (
+  compressors: Compressors,
+  context: Context,
+  invertedIndex: InvertedIndex,
+  writer: ZipsonWriter,
+  options: CompressOptions,
+  struct: TemplateStruct) => {
+    writer.write(TEMPLATE_OBJECT_START)
+
+    for(let i = 0; i< struct.length; i++) {
+      const key = struct[i][0]; 
+      const isNested = struct[i].length > 1;
+      compressors.string(compressors, context, key, invertedIndex, writer, options); 
+      if(isNested) {
+        compresObjectTemplate(compressors, context, invertedIndex, writer, options, <TemplateStruct>struct[i][1])
+      }
+    }
+
+    writer.write(TEMPLATE_OBJECT_END); 
+} 
 
 
 
@@ -24,8 +48,8 @@ export class TemplateObject implements TemplateCompressor<any> {
           }
     }
 
-    compressTemplate = (compressors: Compressors, context: Context, invertedIndex: InvertedIndex, writer: ZipsonWriter, options: CompressOptions) => void; {
-        compressObjectTemplate(compressors, context, invertedIndex, writer, options, this.struct)
+    compressTemplate (compressors: Compressors, context: Context, invertedIndex: InvertedIndex, writer: ZipsonWriter, options: CompressOptions) {
+        compresObjectTemplate(compressors, context, invertedIndex, writer, options, this.struct)
     }
 
     compressTemplateValues  (
@@ -35,7 +59,7 @@ export class TemplateObject implements TemplateCompressor<any> {
         writer: ZipsonWriter,
         options: CompressOptions,
         obj: any) {
-            compressObjectValues(compressors, context, invertedIndex, writer, options, this.struct, obj)
+        compressObjectValues(compressors, context, invertedIndex, writer, options, this.struct, obj)
     }
 
     isNextTemplateable(obj: any, writer: ZipsonWriter) {
@@ -47,7 +71,7 @@ export class TemplateObject implements TemplateCompressor<any> {
 
 
     end(writer: ZipsonWriter) {
-        writer
+        writer.write(TEMPLATE_OBJECT_FINAL); 
     }
     
 }
@@ -128,33 +152,15 @@ const conformsToStructure = (struct: TemplateStruct, obj: any) => {
   return true 
 }
 
-const compressObjectTemplate = (
-  compressors: Compressors,
-  context: Context,
-  invertedIndex: InvertedIndex,
-  writer: ZipsonWriter,
-  options: CompressOptions,
-  struct: TemplateStruct) => {
-    writer.write(TEMPLATE_OBJECT_START)
 
-    for(let i = 0; i< struct.length; i++) {
-      const key = struct[i][0]; 
-      const isNested = struct[i].length > 1;
-      compressors.string(compressors, context, key, invertedIndex, writer, options); 
-      if(isNested) {
-        compressObjectTemplate(compressors, context, invertedIndex, writer, options, <TemplateStruct>struct[i][1])
-      }
-    }
-
-    writer.write(TEMPLATE_OBJECT_END); 
-  } 
    
 
 
 /**
  * Compress object values according to provided structure to writer
  */
-function compressObjectValues(  compressors: Compressors,
+function compressObjectValues(
+  compressors: Compressors,
   context: Context,
   invertedIndex: InvertedIndex,
   writer: ZipsonWriter,
@@ -164,6 +170,7 @@ function compressObjectValues(  compressors: Compressors,
   
     for(let i = 0; i<struct.length; i++) {
       const key = struct[i][0]; 
+      const value = obj[key]; 
       const isNested = struct[i].length > 1; 
       if(isNested) {
         compressObjectValues(compressors, context, invertedIndex, writer, options, <TemplateStruct>struct[i][1], value)
