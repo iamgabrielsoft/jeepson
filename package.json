@@ -1,12 +1,38 @@
 {
   "name": "jeepson",
   "version": "0.0.1",
-  "description": "json parser",
+  "description": "Json parser and stringify package",
   "main": "index.ts",
-  "repository": "'",
+  "directories": {
+    "doc": "doc"
+  },
+  "dependencies": {
+    "@types/chai": "^4.3.0",
+    "browserify": "^17.0.0",
+    "chai": "^4.3.6",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.3"
+  },
+  "devDependencies": {
+    "mocha": "^9.2.2"
+  },
+  "scripts": {
+    "start": "node .",
+    "test": "mocha ts 'test/**/*.ts'",
+    "build:ts": "tsc",
+    "dev": "nodemon index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iamgabrielsoft/jeepson.git"
+  },
+  "keywords": [
+    "json-parser"
+  ],
   "author": "iamgabrielsoft",
   "license": "MIT",
-  "dependencies": {
-    "mocha": "^9.2.2"
-  }
+  "bugs": {
+    "url": "https://github.com/iamgabrielsoft/jeepson/issues"
+  },
+  "homepage": "https://github.com/iamgabrielsoft/jeepson#readme"
 }
