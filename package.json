@@ -5,5 +5,8 @@
   "main": "index.ts",
   "repository": "'",
   "author": "iamgabrielsoft",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "mocha": "^9.2.2"
+  }
 }
