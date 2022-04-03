@@ -13,4 +13,4 @@ Jeepson is an Alternative to JSON.parse/stringify with added compression and str
 
 
 ### Author 
- - <a href="mailto:iamgabrielsoft@gmail.com?"><img src="https://img.shields.io/badge/gmail-%23DD0031.svg?&style=for-the-badge&logo=gmail&logoColor=white"/></a>
+ - <a href="mailto:iamgabrielsoft@gmail.com"><img src="https://img.shields.io/badge/gmail-%23DD0031.svg?&style=for-the-badge&logo=gmail&logoColor=white"/> iamgabrielsoft</a>
